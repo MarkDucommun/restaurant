@@ -4,8 +4,9 @@ class RestaurantsController < ApplicationController
   end
 
   def create
-    @restaurant = Restaurant.create(restaurant_create_params)
-    if @restaurant.persisted?
+    @restaurant = Restaurant.create(restaurant_params)
+    @restaurant.owners << current_owner
+    if @restaurant.valid?
       redirect_to(@restaurant)
     else
       render :new
@@ -62,9 +63,5 @@ class RestaurantsController < ApplicationController
       :full_address,
       :phone_number
     )
-  end
-
-  def restaurant_create_params
-    restaurant_params.merge(owner: current_owner)
   end
 end

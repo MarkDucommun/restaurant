@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113165818) do
+ActiveRecord::Schema.define(version: 20151113183714) do
 
   create_table "owners", force: :cascade do |t|
     t.string   "name"
@@ -32,14 +32,16 @@ ActiveRecord::Schema.define(version: 20151113165818) do
   add_index "owners", ["email"], name: "index_owners_on_email", unique: true
   add_index "owners", ["reset_password_token"], name: "index_owners_on_reset_password_token", unique: true
 
-  create_table "restaurants", force: :cascade do |t|
-    t.string  "name"
-    t.string  "description"
-    t.string  "full_address"
-    t.string  "phone_number"
-    t.integer "owner_id"
+  create_table "owners_restaurants", force: :cascade do |t|
+    t.integer "owner_id",      null: false
+    t.integer "restaurant_id", null: false
   end
 
-  add_index "restaurants", ["owner_id"], name: "index_restaurants_on_owner_id"
+  create_table "restaurants", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "full_address"
+    t.string "phone_number"
+  end
 
 end

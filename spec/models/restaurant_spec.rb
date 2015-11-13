@@ -6,9 +6,24 @@ describe Restaurant do
     expect(restaurant.valid?).to be false
   end
 
+  it "can have many owners" do
+    restaurant = Restaurant.create(name: 'A name')
+    expect {
+      2.times do |i|
+        restaurant.owners << Owner.create(email: "#{i}@#{i}.com")
+      end
+    }.to_not raise_error
+    restaurant.reload
+    expect(restaurant.owners.length).to be 2
+  end
+
   describe '#is_owner?' do
     let(:owner) { Owner.create(email: 'b@b.com') }
-    let(:restaurant) { Restaurant.new(name: 'A name', owner: owner) }
+    let(:restaurant) do
+      r = Restaurant.new(name: 'A name')
+      r.owners << owner
+      r
+    end
 
     it 'returns true if the owner submitted owns the restaurant' do
       expect(restaurant.is_owner?(owner)).to be true

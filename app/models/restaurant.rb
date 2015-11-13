@@ -1,10 +1,11 @@
 class Restaurant < ActiveRecord::Base
-  belongs_to :owner
+  has_many :owners_restaurants
+  has_many :owners, through: :owners_restaurants
 
   validates_presence_of :name
 
   def is_owner?(an_owner)
-    self.owner_id == an_owner.id
+    self.owners.include?(an_owner)
   rescue
     false
   end
